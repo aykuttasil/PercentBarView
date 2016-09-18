@@ -39,17 +39,17 @@ dependencies {
 
 ext {
     bintrayRepo = 'maven'
-    bintrayName = 'PercentView'
+    bintrayName = 'PercentBar'
     orgName = 'aykuttasil'
 
     publishedGroupId = 'com.aykuttasil'
-    libraryName = 'PercentBarView'
+    libraryName = 'PercentBar'
     artifact = 'percentbar' // module ile aynı isimde olması gerekiyor
 
     libraryDescription = 'Percent Bar View'
 
-    siteUrl = '***'
-    gitUrl = '***.git'
+    siteUrl = 'https://github.com/aykuttasil/PercentBarView'
+    gitUrl = 'https://github.com/aykuttasil/PercentBarView.git'
 
     libraryVersion = rootProject.ext.libraryVersion
 
