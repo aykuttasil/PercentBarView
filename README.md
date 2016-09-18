@@ -15,4 +15,7 @@ PercentBar
 <p align="center">
   <img src="https://cloud.githubusercontent.com/assets/3179872/18619207/44e432da-7dff-11e6-8988-91d1faf4eed0.gif" width="350"/>
 </p>
-<!--![2016_09_18_23_47_40](https://cloud.githubusercontent.com/assets/3179872/18619207/44e432da-7dff-11e6-8988-91d1faf4eed0.gif)-->
+
+```
+compile 'com.aykuttasil:percentbar:1.0.0'
+```
