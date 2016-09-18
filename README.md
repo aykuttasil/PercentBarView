@@ -1,6 +1,6 @@
 # PercentBarView
 PercentBar
-
+```
  View alphaView = findViewById(R.id.SoruText);
  CustomAnswerPercent customAnswerPercent = (CustomAnswerPercent) findViewById(R.id.MyCustomAnswerPercent);
  customAnswerPercent.addAlphaView(alphaView);
@@ -8,3 +8,5 @@ PercentBar
  customAnswerPercent.setBValue(qf.getQuestion().getOption_A_Count());
 
  customAnswerPercent.showResult();
+```
+
