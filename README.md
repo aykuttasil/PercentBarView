@@ -3,13 +3,12 @@
 PercentBar
 
 ```
- View alphaView = findViewById(R.id.SoruText);
- CustomAnswerPercent customAnswerPercent = (CustomAnswerPercent) findViewById(R.id.MyCustomAnswerPercent);
- customAnswerPercent.addAlphaView(alphaView);
- customAnswerPercent.setAValue(70);
- customAnswerPercent.setBValue(55);
-
- customAnswerPercent.showResult();
+            View alphaView = findViewById(R.id.ImageViewSoruImage);
+            PercentBarView percentBarView = (PercentBarView) findViewById(R.id.PercentBarView);
+            percentBarView.addAlphaView(alphaView);
+            percentBarView.setAValue(70);
+            percentBarView.setBValue(55);
+            percentBarView.showResult();
 ```
 
 <p align="center">
