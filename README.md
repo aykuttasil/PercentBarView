@@ -1,5 +1,7 @@
-# PercentBarView
+# PercentBar 
+
 PercentBar
+
 ```
  View alphaView = findViewById(R.id.SoruText);
  CustomAnswerPercent customAnswerPercent = (CustomAnswerPercent) findViewById(R.id.MyCustomAnswerPercent);

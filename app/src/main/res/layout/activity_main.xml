@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/com.aykuttasil.percentbarapp"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,8 +10,190 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.aykuttasil.percentbarapp.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="3dp"
+            android:orientation="vertical"
+            custom:cardBackgroundColor="@color/cardview_light_background"
+            custom:cardCornerRadius="10dp"
+            custom:cardElevation="5dp"
+            custom:contentPadding="5dp">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/ImageViewSoruImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentTop="true"
+                    android:src="@mipmap/ic_launcher" />
+
+                <com.google.android.flexbox.FlexboxLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.aykuttasil.percentbarapp.util.AutoFitTextView
+                        android:id="@+id/TextViewSoru"
+                        fontPath="fonts/Tabatha Regular.ttf"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:ellipsize="none"
+                        android:gravity="center"
+                        android:maxLines="5"
+                        android:padding="5dp"
+                        android:text="Auto Resized Text"
+                        android:textSize="100sp" />
+
+
+                    <com.aykuttasil.percentbar.PercentBarView
+                        android:id="@+id/PercentBarView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        custom:barAColor="@color/colorAccent"
+                        custom:barBColor="@color/colorPrimary" />
+
+                </com.google.android.flexbox.FlexboxLayout>
+            </RelativeLayout>
+
+
+        </android.support.v7.widget.CardView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/RelativeLayout1">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="3dp"
+            android:orientation="vertical"
+            custom:cardBackgroundColor="@color/cardview_light_background"
+            custom:cardCornerRadius="10dp"
+            custom:cardElevation="5dp"
+            custom:contentPadding="5dp">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/ImageViewSoruImage1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentTop="true"
+                    android:src="@mipmap/ic_launcher" />
+
+                <com.google.android.flexbox.FlexboxLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.aykuttasil.percentbarapp.util.AutoFitTextView
+                        android:id="@+id/TextViewSoru1"
+                        fontPath="fonts/Tabatha Regular.ttf"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:ellipsize="none"
+                        android:gravity="center"
+                        android:maxLines="5"
+                        android:padding="5dp"
+                        android:text="Auto Resized Text"
+                        android:textSize="100sp" />
+
+
+                    <com.aykuttasil.percentbar.PercentBarView
+                        android:id="@+id/PercentBarView1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        custom:barAColor="@color/colorAccent"
+                        custom:barBColor="@color/colorPrimary" />
+
+                </com.google.android.flexbox.FlexboxLayout>
+            </RelativeLayout>
+
+
+        </android.support.v7.widget.CardView>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/RelativeLayout2">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="3dp"
+            android:orientation="vertical"
+            custom:cardBackgroundColor="@color/cardview_light_background"
+            custom:cardCornerRadius="10dp"
+            custom:cardElevation="5dp"
+            custom:contentPadding="5dp">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/ImageViewSoruImage2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentTop="true"
+                    android:src="@mipmap/ic_launcher" />
+
+                <com.google.android.flexbox.FlexboxLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.aykuttasil.percentbarapp.util.AutoFitTextView
+                        android:id="@+id/TextViewSoru2"
+                        fontPath="fonts/Tabatha Regular.ttf"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:ellipsize="none"
+                        android:gravity="center"
+                        android:maxLines="5"
+                        android:padding="5dp"
+                        android:text="Auto Resized Text"
+                        android:textSize="100sp" />
+
+
+                    <com.aykuttasil.percentbar.PercentBarView
+                        android:id="@+id/PercentBarView2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        custom:barAColor="@color/colorAccent"
+                        custom:barBColor="@color/colorPrimary" />
+
+                </com.google.android.flexbox.FlexboxLayout>
+            </RelativeLayout>
+
+
+        </android.support.v7.widget.CardView>
+    </RelativeLayout>
+
 </RelativeLayout>
