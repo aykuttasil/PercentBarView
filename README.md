@@ -1,3 +1,5 @@
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-PercentBarView-green.svg?style=true)](https://android-arsenal.com/details/1/4373)
+
 # PercentBar 
 
 Show result in Percent Bar with animation.
