@@ -22,7 +22,7 @@ Show result in Percent Bar with animation.
 
 Gradle
 
-Add it as a dependency in your app's build.gradle file (will be available shortly)
+Add it as a dependency in your app's build.gradle file
 ```
 compile 'com.aykuttasil:percentbar:1.0.0'
 ```
