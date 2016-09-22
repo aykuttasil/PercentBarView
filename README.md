@@ -1,6 +1,8 @@
 # PercentBar 
 
-PercentBar
+Show result in Percent Bar with animation.
+
+# How to Use
 
 ```
             View alphaView = findViewById(R.id.ImageViewSoruImage);
@@ -15,6 +17,12 @@ PercentBar
   <img src="https://cloud.githubusercontent.com/assets/3179872/18619207/44e432da-7dff-11e6-8988-91d1faf4eed0.gif" width="350"/>
 </p>
 
+
+# Installation
+
+Gradle
+
+Add it as a dependency in your app's build.gradle file (will be available shortly)
 ```
 compile 'com.aykuttasil:percentbar:1.0.0'
 ```
