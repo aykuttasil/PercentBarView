@@ -38,7 +38,7 @@
                     android:layout_alignParentTop="true"
                     android:src="@mipmap/ic_launcher" />
 
-                <com.google.android.flexbox.FlexboxLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -51,7 +51,7 @@
                         android:gravity="center"
                         android:maxLines="5"
                         android:padding="5dp"
-                        android:text="Auto Resized Text"
+                        android:text="X"
                         android:textSize="100sp" />
 
 
@@ -61,10 +61,10 @@
                         android:layout_height="match_parent"
                         android:layout_alignParentBottom="true"
                         android:layout_centerHorizontal="true"
-                        custom:barAColor="@color/colorAccent"
-                        custom:barBColor="@color/colorPrimary" />
+                        custom:barLeftColor="@color/colorAccent"
+                        custom:barRightColor="@color/colorPrimary" />
 
-                </com.google.android.flexbox.FlexboxLayout>
+                </RelativeLayout>
             </RelativeLayout>
 
 
@@ -100,7 +100,7 @@
                     android:layout_alignParentTop="true"
                     android:src="@mipmap/ic_launcher" />
 
-                <com.google.android.flexbox.FlexboxLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -113,7 +113,7 @@
                         android:gravity="center"
                         android:maxLines="5"
                         android:padding="5dp"
-                        android:text="Auto Resized Text"
+                        android:text="Y"
                         android:textSize="100sp" />
 
 
@@ -123,16 +123,15 @@
                         android:layout_height="match_parent"
                         android:layout_alignParentBottom="true"
                         android:layout_centerHorizontal="true"
-                        custom:barAColor="@color/colorAccent"
-                        custom:barBColor="@color/colorPrimary" />
+                        custom:barLeftColor="@color/colorAccent"
+                        custom:barRightColor="@color/colorPrimary" />
 
-                </com.google.android.flexbox.FlexboxLayout>
+                </RelativeLayout>
             </RelativeLayout>
 
 
         </android.support.v7.widget.CardView>
     </RelativeLayout>
-
 
     <RelativeLayout
         android:id="@+id/RelativeLayout3"
@@ -163,7 +162,7 @@
                     android:layout_alignParentTop="true"
                     android:src="@mipmap/ic_launcher" />
 
-                <com.google.android.flexbox.FlexboxLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -176,7 +175,7 @@
                         android:gravity="center"
                         android:maxLines="5"
                         android:padding="5dp"
-                        android:text="Auto Resized Text"
+                        android:text="Z"
                         android:textSize="100sp" />
 
 
@@ -186,10 +185,10 @@
                         android:layout_height="match_parent"
                         android:layout_alignParentBottom="true"
                         android:layout_centerHorizontal="true"
-                        custom:barAColor="@color/colorAccent"
-                        custom:barBColor="@color/colorPrimary" />
+                        custom:barLeftColor="@color/colorAccent"
+                        custom:barRightColor="@color/colorPrimary" />
 
-                </com.google.android.flexbox.FlexboxLayout>
+                </RelativeLayout>
             </RelativeLayout>
 
 

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="CustomAnswerPercent">
-        <attr name="barAWidth" format="integer" />
-        <attr name="barBWidth" format="integer" />
-        <attr name="barAValue" format="integer" />
-        <attr name="barBValue" format="integer" />
+        <attr name="barLeftWidth" format="integer" />
+        <attr name="barRightWidth" format="integer" />
+        <attr name="barLeftValue" format="integer" />
+        <attr name="barRightValue" format="integer" />
         <attr name="barSValue" format="integer" />
-        <attr name="barAColor" format="color" />
-        <attr name="barBColor" format="color" />
+        <attr name="barLeftColor" format="color" />
+        <attr name="barRightColor" format="color" />
         <attr name="animBarDuration" format="float" />
         <attr name="animAlphaViewDuration" format="float" />
         <attr name="alphaViewValue" format="float" />

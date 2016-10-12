@@ -10,10 +10,26 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.support.v4.util.Pair;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.aykuttasil.percentbar.util.PicassoCircleTransform;
+import com.aykuttasil.percentbar.util.adapter.MaterialListAdapter;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
 
 /**
  * Created by aykutasil on 18.09.2016.
@@ -34,21 +50,30 @@ public class PercentBarView extends View {
     RectF mRectBarA;
     RectF mRectBarB;
 
-    int mColorBarA;
-    int mColorBarB;
+    int mColorBarLeft;
+    int mColorBarRight;
 
-    int mValueBarA;
-    int mValueBarB;
+    int mValueBarLeft;
+    int mValueBarRight;
     int mValueBarS;
 
-    int widthBarA;
-    int widthBarB;
+    int widthBarLeft;
+    int widthBarRight;
 
     float animAValue;
     float animBValue;
     long animBarDuration;
     long animAlphaViewDuration;
     float alphaViewValue;
+
+    public enum BarField {
+        LEFT,
+        RIGHT
+    }
+
+    List<Pair<BarField, String>> mListImages;
+    private String TitleList = "My List";
+    private int IMAGES_COUNT = 3;
 
     public PercentBarView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -61,13 +86,13 @@ public class PercentBarView extends View {
         this.mContext = context;
 
         TypedArray ta = context.getTheme().obtainStyledAttributes(attrs, R.styleable.CustomAnswerPercent, 0, 0);
-        this.widthBarA = ta.getInt(R.styleable.CustomAnswerPercent_barAWidth, 50);
-        this.widthBarB = ta.getInt(R.styleable.CustomAnswerPercent_barBWidth, 50);
-        this.mValueBarA = ta.getInt(R.styleable.CustomAnswerPercent_barAValue, 0);
-        this.mValueBarB = ta.getInt(R.styleable.CustomAnswerPercent_barBValue, 0);
+        this.widthBarLeft = ta.getInt(R.styleable.CustomAnswerPercent_barLeftWidth, 50);
+        this.widthBarRight = ta.getInt(R.styleable.CustomAnswerPercent_barRightWidth, 50);
+        this.mValueBarLeft = ta.getInt(R.styleable.CustomAnswerPercent_barLeftValue, 0);
+        this.mValueBarRight = ta.getInt(R.styleable.CustomAnswerPercent_barRightValue, 0);
         this.mValueBarS = ta.getInt(R.styleable.CustomAnswerPercent_barSValue, 0);
-        this.mColorBarA = ta.getColor(R.styleable.CustomAnswerPercent_barAColor, Color.RED);
-        this.mColorBarB = ta.getColor(R.styleable.CustomAnswerPercent_barBColor, Color.BLUE);
+        this.mColorBarLeft = ta.getColor(R.styleable.CustomAnswerPercent_barLeftColor, Color.RED);
+        this.mColorBarRight = ta.getColor(R.styleable.CustomAnswerPercent_barRightColor, Color.BLUE);
         this.animBarDuration = ta.getInt(R.styleable.CustomAnswerPercent_animBarDuration, 500);
         this.animAlphaViewDuration = ta.getInt(R.styleable.CustomAnswerPercent_animAlphaViewDuration, 300);
         this.alphaViewValue = ta.getFloat(R.styleable.CustomAnswerPercent_alphaViewValue, 0.3f);
@@ -78,20 +103,20 @@ public class PercentBarView extends View {
         this.mAlphaView = hostView;
     }
 
-    public void setAValue(int val) {
-        this.mValueBarA = val;
+    public void setRightValue(int val) {
+        this.mValueBarRight = val;
     }
 
-    public void setWidthBarA(int val) {
-        this.widthBarA = val;
+    public void setLeftWidthBar(int val) {
+        this.widthBarLeft = val;
     }
 
-    public void setWidthBarB(int val) {
-        this.widthBarB = val;
+    public void setRightWidthBar(int val) {
+        this.widthBarRight = val;
     }
 
-    public void setBValue(int val) {
-        this.mValueBarB = val;
+    public void setLeftValue(int val) {
+        this.mValueBarLeft = val;
     }
 
     public void setSValue(int val) {
@@ -108,6 +133,26 @@ public class PercentBarView extends View {
 
     public void setAlphaViewValue(float val) {
         this.alphaViewValue = val;
+    }
+
+    public void setImages(List<Pair<BarField, String>> list) {
+        this.mListImages = list;
+    }
+
+    public void setShowImagesCount(int count) {
+        this.IMAGES_COUNT = count;
+    }
+
+    public void setTitleList(String title) {
+        this.TitleList = title;
+    }
+
+    public void setRightBarColor(int color) {
+        this.mColorBarRight = color;
+    }
+
+    public void setLeftBarColor(int color) {
+        this.mColorBarLeft = color;
     }
 
     public void showResult() throws Exception {
@@ -135,14 +180,14 @@ public class PercentBarView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        drawBarA(canvas);
-        drawBarB(canvas);
+        drawBarLeft(canvas);
+        drawBarRight(canvas);
     }
 
     private void startBar() {
 
-        // Bar A değerini %60 (Sadece 60) haline dönüştürüyoruz.
-        int computePercentA = (int) (((float) mValueBarA / (float) (mValueBarA + mValueBarB)) * 100);
+        // Bar LEFT değerini %60 (Sadece 60) haline dönüştürüyoruz.
+        int computePercentA = (int) (((float) mValueBarLeft / (float) (mValueBarLeft + mValueBarRight)) * 100);
 
         // Bar ın gösterileceği yüksekliği belirlemek için toplam yükseklikten yazının yüksekliği değerini çıkartıyoruz (100)
         // ve bu değerin yüzdelik değerini buluyoruz.
@@ -167,7 +212,7 @@ public class PercentBarView extends View {
         animatorAHeight.start();
 
 
-        int computePercentB = (int) (((float) mValueBarB / (float) (mValueBarA + mValueBarB)) * 100);
+        int computePercentB = (int) (((float) mValueBarRight / (float) (mValueBarLeft + mValueBarRight)) * 100);
         final float computeBarBValue = ((getHeight() - 130) * computePercentB / 100);
 
         final ValueAnimator animatorBHeight = ValueAnimator.ofFloat(0, computeBarBValue);
@@ -186,29 +231,29 @@ public class PercentBarView extends View {
         animatorBHeight.start();
     }
 
-    private void drawBarA(Canvas canvas) {
+    private void drawBarLeft(Canvas canvas) {
         //float center = getWidth() / 2;
         mPaintBarA = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mPaintBarA.setColor(mColorBarA);
+        mPaintBarA.setColor(mColorBarLeft);
 
 
         Resources resources = getResources();
         float scale = resources.getDisplayMetrics().density;
 
-        float startPoint = (getWidth() / 4) - widthBarA;
-        float endPoint = (getWidth() / 4) + widthBarA;
+        float startPoint = (getWidth() / 4) - widthBarLeft;
+        float endPoint = (getWidth() / 4) + widthBarLeft;
 
         // Eğer xml içerisinde bar değeri verilmişse animValue yi valueABar a eşitliyoruz.
-        if (!ButtonClick) animAValue = mValueBarA;
+        if (!ButtonClick) animAValue = mValueBarLeft;
         mRectBarA = new RectF(startPoint, (getHeight() - animAValue), endPoint, getHeight());
         canvas.drawRect(mRectBarA, mPaintBarA);
 
         if (isFinishAnimBarA) {
-            //Logger.i("Anim Bar A finised ");
+            //Logger.i("Anim Bar LEFT finised ");
 
-            int computePercentA = (int) (((float) mValueBarA / (float) (mValueBarA + mValueBarB)) * 100);
+            int computePercentA = (int) (((float) mValueBarLeft / (float) (mValueBarLeft + mValueBarRight)) * 100);
             float textStart = startPoint + (mRectBarA.width() / 2);
-            float textEnd = getHeight() - mRectBarA.height() - (widthBarA / 2);
+            float textEnd = getHeight() - mRectBarA.height() - (widthBarLeft / 2);
 
             Paint percentText = new Paint();
             percentText.setTextSize((int) (17 * scale));
@@ -222,30 +267,87 @@ public class PercentBarView extends View {
 
             canvas.drawText(barText, textStart, textEnd, percentText);
 
+            if (mListImages != null && mListImages.size() > 0) {
+                drawImagesLeft();
+            }
         }
     }
 
-    private void drawBarB(Canvas canvas) {
+    private void drawImagesLeft() {
+
+        final RelativeLayout relativeLayout = (RelativeLayout) getParent();
+
+        Observable.from(mListImages)
+                .filter(new Func1<Pair<BarField, String>, Boolean>() {
+                    @Override
+                    public Boolean call(Pair<BarField, String> barFieldStringPair) {
+                        return barFieldStringPair.first == BarField.LEFT;
+                    }
+                })
+                .take(IMAGES_COUNT)
+                .toList()
+                .filter(new Func1<List<Pair<BarField, String>>, Boolean>() {
+                    @Override
+                    public Boolean call(List<Pair<BarField, String>> pairs) {
+                        return pairs.size() > 0;
+                    }
+                })
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<List<Pair<BarField, String>>>() {
+                    @Override
+                    public void call(List<Pair<BarField, String>> pairs) {
+                        int index = 0;
+                        for (Pair<BarField, String> listItem : pairs) {
+
+                            ImageView imageView1 = new ImageView(mContext);
+
+                            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_START);
+                            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                            layoutParams.leftMargin = 30 - (index % 2 == 0 ? 10 : -10);
+                            layoutParams.bottomMargin = index * 50;
+                            imageView1.setLayoutParams(layoutParams);
+                            relativeLayout.addView(imageView1);
+
+                            Log.i(TAG, "imageview eklendi");
+                            Log.i(TAG, listItem.second);
+
+                            Picasso.with(mContext)
+                                    .load(listItem.second)
+                                    .transform(new PicassoCircleTransform())
+                                    .resize(100, 100)
+                                    .centerCrop()
+                                    .into(imageView1);
+
+                            index++;
+                        }
+                        drawAnotherIcon(index, BarField.LEFT);
+                    }
+                });
+    }
+
+    private void drawBarRight(Canvas canvas) {
 
         //float center = getWidth() / 2;
         mPaintBarB = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mPaintBarB.setColor(mColorBarB);
+        mPaintBarB.setColor(mColorBarRight);
 
         Resources resources = getResources();
         float scale = resources.getDisplayMetrics().density;
 
-        float startPoint = getWidth() - (getWidth() / 4) - widthBarB;
-        float endPoint = getWidth() - (getWidth() / 4) + widthBarB;
+        float startPoint = getWidth() - (getWidth() / 4) - widthBarRight;
+        float endPoint = getWidth() - (getWidth() / 4) + widthBarRight;
 
         // Eğer xml içerisinde bar değeri verilmişse animValue yi valueABar a eşitliyoruz.
-        if (!ButtonClick) animBValue = mValueBarB;
+        if (!ButtonClick) animBValue = mValueBarRight;
         mRectBarB = new RectF(startPoint, (getHeight() - animBValue), endPoint, getHeight());
         canvas.drawRect(mRectBarB, mPaintBarB);
 
         if (isFinishAnimBarB) {
-            int computePercentB = (int) (((float) mValueBarB / (float) (mValueBarA + mValueBarB)) * 100);
+            int computePercentB = (int) (((float) mValueBarRight / (float) (mValueBarLeft + mValueBarRight)) * 100);
             float textStart = startPoint + (mRectBarB.width() / 2);
-            float textEnd = getHeight() - mRectBarB.height() - (widthBarB / 2);
+            float textEnd = getHeight() - mRectBarB.height() - (widthBarRight / 2);
 
             Paint percentText = new Paint();
             percentText.setTextSize((int) (17 * scale));
@@ -258,7 +360,123 @@ public class PercentBarView extends View {
             percentText.getTextBounds(barText, 0, barText.length(), barTextRect);
 
             canvas.drawText(barText, textStart, textEnd, percentText);
+
+            if (mListImages != null && mListImages.size() > 0) {
+                drawImagesRight();
+            }
         }
+    }
+
+    private void drawImagesRight() {
+
+        final RelativeLayout relativeLayout = (RelativeLayout) getParent();
+
+        Observable.from(mListImages)
+                .filter(new Func1<Pair<BarField, String>, Boolean>() {
+                    @Override
+                    public Boolean call(Pair<BarField, String> barFieldStringPair) {
+                        return barFieldStringPair.first == BarField.RIGHT;
+                    }
+                })
+                .take(IMAGES_COUNT)
+                .toList()
+                .filter(new Func1<List<Pair<BarField, String>>, Boolean>() {
+                    @Override
+                    public Boolean call(List<Pair<BarField, String>> pairs) {
+                        return pairs.size() > 0;
+                    }
+                })
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<List<Pair<BarField, String>>>() {
+                    @Override
+                    public void call(List<Pair<BarField, String>> pairs) {
+                        int index = 0;
+                        for (Pair<BarField, String> listItem : pairs) {
+
+                            ImageView imageView1 = new ImageView(mContext);
+
+                            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_END);
+                            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                            layoutParams.rightMargin = 30 - (index % 2 == 0 ? 10 : -10);
+                            layoutParams.bottomMargin = index * 50;
+                            imageView1.setLayoutParams(layoutParams);
+                            relativeLayout.addView(imageView1);
+
+                            Log.i(TAG, "imageview eklendi");
+                            Log.i(TAG, listItem.second);
+
+                            Picasso.with(mContext)
+                                    .load(listItem.second)
+                                    .transform(new PicassoCircleTransform())
+                                    .resize(100, 100)
+                                    .centerCrop()
+                                    .into(imageView1);
+
+                            index++;
+                        }
+                        drawAnotherIcon(index, BarField.RIGHT);
+                    }
+                });
+    }
+
+    private void drawAnotherIcon(int index, final BarField barField) {
+        RelativeLayout relativeLayout = (RelativeLayout) getParent();
+        ImageView imageView = new ImageView(mContext);
+
+        imageView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final List<Pair<BarField, String>> listItem = new ArrayList<>();
+
+                rx.Observable.from(mListImages)
+                        .filter(new Func1<Pair<BarField, String>, Boolean>() {
+                            @Override
+                            public Boolean call(Pair<BarField, String> barFieldStringPair) {
+                                return barFieldStringPair.first == barField;
+                            }
+                        })
+                        .subscribe(new Action1<Pair<BarField, String>>() {
+                            @Override
+                            public void call(Pair<BarField, String> barFieldStringPair) {
+                                listItem.add(barFieldStringPair);
+                            }
+                        }).unsubscribe();
+
+
+                MaterialListAdapter adapter = new MaterialListAdapter(mContext, listItem);
+
+                MaterialDialog dialog = new MaterialDialog.Builder(mContext)
+                        .title(TitleList)
+                        .adapter(adapter, new MaterialDialog.ListCallback() {
+                            @Override
+                            public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+
+                            }
+                        }).build();
+
+                dialog.show();
+            }
+        });
+
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.addRule(barField == BarField.RIGHT ? RelativeLayout.ALIGN_PARENT_END : RelativeLayout.ALIGN_PARENT_START);
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        layoutParams.rightMargin = barField == BarField.LEFT ? 30 : 0;
+        layoutParams.leftMargin = barField == BarField.RIGHT ? 30 : 0;
+        layoutParams.bottomMargin = index * 50;
+
+        imageView.setLayoutParams(layoutParams);
+
+        relativeLayout.addView(imageView);
+
+        Picasso.with(mContext)
+                .load(R.drawable.ic_add_circle_indigo_300_48dp)
+                .placeholder(R.drawable.ic_add_circle_indigo_300_48dp)
+                .resize(100, 100)
+                .into(imageView);
     }
 
     @Override
