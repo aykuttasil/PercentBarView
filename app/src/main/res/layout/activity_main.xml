@@ -178,7 +178,6 @@
                         android:text="Z"
                         android:textSize="100sp" />
 
-
                     <com.aykuttasil.percentbar.PercentBarView
                         android:id="@+id/PercentBarView2"
                         android:layout_width="match_parent"

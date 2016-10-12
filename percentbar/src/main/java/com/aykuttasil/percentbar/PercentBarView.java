@@ -10,7 +10,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
-import android.support.v4.util.Pair;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.aykuttasil.percentbar.models.BarImageModel;
 import com.aykuttasil.percentbar.util.PicassoCircleTransform;
 import com.aykuttasil.percentbar.util.adapter.MaterialListAdapter;
 import com.squareup.picasso.Picasso;
@@ -71,7 +71,7 @@ public class PercentBarView extends View {
         RIGHT
     }
 
-    List<Pair<BarField, String>> mListImages;
+    List<BarImageModel> mListImages;
     private String TitleList = "My List";
     private int IMAGES_COUNT = 3;
 
@@ -135,7 +135,7 @@ public class PercentBarView extends View {
         this.alphaViewValue = val;
     }
 
-    public void setImages(List<Pair<BarField, String>> list) {
+    public void setImages(List<BarImageModel> list) {
         this.mListImages = list;
     }
 
@@ -278,27 +278,27 @@ public class PercentBarView extends View {
         final RelativeLayout relativeLayout = (RelativeLayout) getParent();
 
         Observable.from(mListImages)
-                .filter(new Func1<Pair<BarField, String>, Boolean>() {
+                .filter(new Func1<BarImageModel, Boolean>() {
                     @Override
-                    public Boolean call(Pair<BarField, String> barFieldStringPair) {
-                        return barFieldStringPair.first == BarField.LEFT;
+                    public Boolean call(BarImageModel barImageModel) {
+                        return barImageModel.getValue() == BarField.LEFT;
                     }
                 })
                 .take(IMAGES_COUNT)
                 .toList()
-                .filter(new Func1<List<Pair<BarField, String>>, Boolean>() {
+                .filter(new Func1<List<BarImageModel>, Boolean>() {
                     @Override
-                    public Boolean call(List<Pair<BarField, String>> pairs) {
-                        return pairs.size() > 0;
+                    public Boolean call(List<BarImageModel> barImageModels) {
+                        return barImageModels.size() > 0;
                     }
                 })
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<Pair<BarField, String>>>() {
+                .subscribe(new Action1<List<BarImageModel>>() {
                     @Override
-                    public void call(List<Pair<BarField, String>> pairs) {
+                    public void call(List<BarImageModel> barImageModels) {
                         int index = 0;
-                        for (Pair<BarField, String> listItem : pairs) {
+                        for (BarImageModel listItem : barImageModels) {
 
                             ImageView imageView1 = new ImageView(mContext);
 
@@ -310,11 +310,8 @@ public class PercentBarView extends View {
                             imageView1.setLayoutParams(layoutParams);
                             relativeLayout.addView(imageView1);
 
-                            Log.i(TAG, "imageview eklendi");
-                            Log.i(TAG, listItem.second);
-
                             Picasso.with(mContext)
-                                    .load(listItem.second)
+                                    .load(listItem.getImageUrl())
                                     .transform(new PicassoCircleTransform())
                                     .resize(100, 100)
                                     .centerCrop()
@@ -372,27 +369,27 @@ public class PercentBarView extends View {
         final RelativeLayout relativeLayout = (RelativeLayout) getParent();
 
         Observable.from(mListImages)
-                .filter(new Func1<Pair<BarField, String>, Boolean>() {
+                .filter(new Func1<BarImageModel, Boolean>() {
                     @Override
-                    public Boolean call(Pair<BarField, String> barFieldStringPair) {
-                        return barFieldStringPair.first == BarField.RIGHT;
+                    public Boolean call(BarImageModel barImageModel) {
+                        return barImageModel.getValue() == BarField.RIGHT;
                     }
                 })
                 .take(IMAGES_COUNT)
                 .toList()
-                .filter(new Func1<List<Pair<BarField, String>>, Boolean>() {
+                .filter(new Func1<List<BarImageModel>, Boolean>() {
                     @Override
-                    public Boolean call(List<Pair<BarField, String>> pairs) {
-                        return pairs.size() > 0;
+                    public Boolean call(List<BarImageModel> barImageModels) {
+                        return barImageModels.size() > 0;
                     }
                 })
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<Pair<BarField, String>>>() {
+                .subscribe(new Action1<List<BarImageModel>>() {
                     @Override
-                    public void call(List<Pair<BarField, String>> pairs) {
+                    public void call(List<BarImageModel> barImageModels) {
                         int index = 0;
-                        for (Pair<BarField, String> listItem : pairs) {
+                        for (BarImageModel listItem : barImageModels) {
 
                             ImageView imageView1 = new ImageView(mContext);
 
@@ -404,11 +401,8 @@ public class PercentBarView extends View {
                             imageView1.setLayoutParams(layoutParams);
                             relativeLayout.addView(imageView1);
 
-                            Log.i(TAG, "imageview eklendi");
-                            Log.i(TAG, listItem.second);
-
                             Picasso.with(mContext)
-                                    .load(listItem.second)
+                                    .load(listItem.getImageUrl())
                                     .transform(new PicassoCircleTransform())
                                     .resize(100, 100)
                                     .centerCrop()
@@ -429,21 +423,22 @@ public class PercentBarView extends View {
             @Override
             public void onClick(View v) {
 
-                final List<Pair<BarField, String>> listItem = new ArrayList<>();
+                final List<BarImageModel> listItem = new ArrayList<>();
 
                 rx.Observable.from(mListImages)
-                        .filter(new Func1<Pair<BarField, String>, Boolean>() {
+                        .filter(new Func1<BarImageModel, Boolean>() {
                             @Override
-                            public Boolean call(Pair<BarField, String> barFieldStringPair) {
-                                return barFieldStringPair.first == barField;
+                            public Boolean call(BarImageModel barImageModel) {
+                                return barImageModel.getValue() == barField;
                             }
                         })
-                        .subscribe(new Action1<Pair<BarField, String>>() {
+                        .subscribe(new Action1<BarImageModel>() {
                             @Override
-                            public void call(Pair<BarField, String> barFieldStringPair) {
-                                listItem.add(barFieldStringPair);
+                            public void call(BarImageModel barImageModel) {
+                                listItem.add(barImageModel);
                             }
-                        }).unsubscribe();
+                        })
+                        .unsubscribe();
 
 
                 MaterialListAdapter adapter = new MaterialListAdapter(mContext, listItem);
