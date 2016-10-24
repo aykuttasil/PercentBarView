@@ -40,31 +40,30 @@ public class PercentBarView extends View {
 
     Context mContext;
     boolean ButtonClick = false;
-    boolean isFinishAnimBarA = false;
-    boolean isFinishAnimBarB = false;
+    boolean isFinishAnimBarLeft = false;
+    boolean isFinishAnimBarRight = false;
     View mAlphaView = null;
 
     Paint mPaint;
-    Paint mPaintBarA;
-    Paint mPaintBarB;
-    RectF mRectBarA;
-    RectF mRectBarB;
+    Paint mPaintBarLeft;
+    Paint mPaintBarRight;
+    RectF mRectBarLeft;
+    RectF mRectBarRight;
 
     int mColorBarLeft;
     int mColorBarRight;
-
     int mValueBarLeft;
     int mValueBarRight;
     int mValueBarS;
-
     int widthBarLeft;
     int widthBarRight;
-
-    float animAValue;
-    float animBValue;
     long animBarDuration;
     long animAlphaViewDuration;
     float alphaViewValue;
+    boolean isAutoShow;
+
+    float animLeftValue;
+    float animRightValue;
 
     public enum BarField {
         LEFT,
@@ -82,7 +81,6 @@ public class PercentBarView extends View {
 
     private void init(Context context, AttributeSet attrs) {
 
-        setSaveEnabled(true);
         this.mContext = context;
 
         TypedArray ta = context.getTheme().obtainStyledAttributes(attrs, R.styleable.CustomAnswerPercent, 0, 0);
@@ -96,6 +94,7 @@ public class PercentBarView extends View {
         this.animBarDuration = ta.getInt(R.styleable.CustomAnswerPercent_animBarDuration, 500);
         this.animAlphaViewDuration = ta.getInt(R.styleable.CustomAnswerPercent_animAlphaViewDuration, 300);
         this.alphaViewValue = ta.getFloat(R.styleable.CustomAnswerPercent_alphaViewValue, 0.3f);
+        this.isAutoShow = ta.getBoolean(R.styleable.CustomAnswerPercent_autoShow, false);
         ta.recycle();
     }
 
@@ -155,9 +154,16 @@ public class PercentBarView extends View {
         this.mColorBarLeft = color;
     }
 
-    public void showResult() throws Exception {
+    public void setAutoShow(boolean autoShow) {
+        this.isAutoShow = autoShow;
+    }
 
-        ButtonClick = true;
+    public void showResult() {
+
+        this.ButtonClick = true;
+        this.isAutoShow = true;
+        isFinishAnimBarLeft = false;
+        isFinishAnimBarRight = false;
 
         if (mAlphaView == null) {
             Log.e(TAG, "alphaView is null");
@@ -194,17 +200,17 @@ public class PercentBarView extends View {
         // Örnek : Host View yüksekliği = 720 , bar oranı = %50
         // - 100 = 620 -> en üstteki yazı için yer açıyoruz
         // * (50 / 100) = 310 -> bar ın gösterileceği yükseklik
-        final float computeBarAValue = ((getHeight() - 130) * computePercentA / 100);
+        final float computeBarLeftValue = ((getHeight() - 130) * computePercentA / 100);
 
-        final ValueAnimator animatorAHeight = ValueAnimator.ofFloat(0, computeBarAValue);
+        final ValueAnimator animatorAHeight = ValueAnimator.ofFloat(0, computeBarLeftValue);
         animatorAHeight.setDuration(animBarDuration);
 
         animatorAHeight.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                animAValue = (float) animatorAHeight.getAnimatedValue();
-                if ((float) animatorAHeight.getAnimatedValue() == computeBarAValue) {
-                    isFinishAnimBarA = true;
+                animLeftValue = (float) animatorAHeight.getAnimatedValue();
+                if ((float) animatorAHeight.getAnimatedValue() == computeBarLeftValue) {
+                    isFinishAnimBarLeft = true;
                 }
                 invalidate();
             }
@@ -213,17 +219,17 @@ public class PercentBarView extends View {
 
 
         int computePercentB = (int) (((float) mValueBarRight / (float) (mValueBarLeft + mValueBarRight)) * 100);
-        final float computeBarBValue = ((getHeight() - 130) * computePercentB / 100);
+        final float computeBarRightValue = ((getHeight() - 130) * computePercentB / 100);
 
-        final ValueAnimator animatorBHeight = ValueAnimator.ofFloat(0, computeBarBValue);
+        final ValueAnimator animatorBHeight = ValueAnimator.ofFloat(0, computeBarRightValue);
         animatorBHeight.setDuration(animBarDuration);
 
         animatorBHeight.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                animBValue = (float) animatorBHeight.getAnimatedValue();
-                if ((float) animatorBHeight.getAnimatedValue() == computeBarBValue) {
-                    isFinishAnimBarB = true;
+                animRightValue = (float) animatorBHeight.getAnimatedValue();
+                if ((float) animatorBHeight.getAnimatedValue() == computeBarRightValue) {
+                    isFinishAnimBarRight = true;
                 }
                 invalidate();
             }
@@ -233,27 +239,33 @@ public class PercentBarView extends View {
 
     private void drawBarLeft(Canvas canvas) {
         //float center = getWidth() / 2;
-        mPaintBarA = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mPaintBarA.setColor(mColorBarLeft);
+
+        if (!isAutoShow) return;
+
+        mPaintBarLeft = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mPaintBarLeft.setColor(mColorBarLeft);
 
 
         Resources resources = getResources();
         float scale = resources.getDisplayMetrics().density;
+        Log.i(TAG, "Scale: " + scale);
 
         float startPoint = (getWidth() / 4) - widthBarLeft;
         float endPoint = (getWidth() / 4) + widthBarLeft;
 
         // Eğer xml içerisinde bar değeri verilmişse animValue yi valueABar a eşitliyoruz.
-        if (!ButtonClick) animAValue = mValueBarLeft;
-        mRectBarA = new RectF(startPoint, (getHeight() - animAValue), endPoint, getHeight());
-        canvas.drawRect(mRectBarA, mPaintBarA);
+        if (!ButtonClick) animLeftValue = mValueBarLeft;
 
-        if (isFinishAnimBarA) {
+
+        mRectBarLeft = new RectF(startPoint, (getHeight() - animLeftValue), endPoint, getHeight());
+        canvas.drawRect(mRectBarLeft, mPaintBarLeft);
+
+        if (isFinishAnimBarLeft) {
             //Logger.i("Anim Bar LEFT finised ");
 
             int computePercentA = (int) (((float) mValueBarLeft / (float) (mValueBarLeft + mValueBarRight)) * 100);
-            float textStart = startPoint + (mRectBarA.width() / 2);
-            float textEnd = getHeight() - mRectBarA.height() - (widthBarLeft / 2);
+            float textStart = startPoint + (mRectBarLeft.width() / 2);
+            float textEnd = getHeight() - mRectBarLeft.height() - (widthBarLeft / 2);
 
             Paint percentText = new Paint();
             percentText.setTextSize((int) (17 * scale));
@@ -326,9 +338,11 @@ public class PercentBarView extends View {
 
     private void drawBarRight(Canvas canvas) {
 
+        if (!isAutoShow) return;
+
         //float center = getWidth() / 2;
-        mPaintBarB = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mPaintBarB.setColor(mColorBarRight);
+        mPaintBarRight = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mPaintBarRight.setColor(mColorBarRight);
 
         Resources resources = getResources();
         float scale = resources.getDisplayMetrics().density;
@@ -337,14 +351,14 @@ public class PercentBarView extends View {
         float endPoint = getWidth() - (getWidth() / 4) + widthBarRight;
 
         // Eğer xml içerisinde bar değeri verilmişse animValue yi valueABar a eşitliyoruz.
-        if (!ButtonClick) animBValue = mValueBarRight;
-        mRectBarB = new RectF(startPoint, (getHeight() - animBValue), endPoint, getHeight());
-        canvas.drawRect(mRectBarB, mPaintBarB);
+        if (!ButtonClick) animRightValue = mValueBarRight;
+        mRectBarRight = new RectF(startPoint, (getHeight() - animRightValue), endPoint, getHeight());
+        canvas.drawRect(mRectBarRight, mPaintBarRight);
 
-        if (isFinishAnimBarB) {
+        if (isFinishAnimBarRight) {
             int computePercentB = (int) (((float) mValueBarRight / (float) (mValueBarLeft + mValueBarRight)) * 100);
-            float textStart = startPoint + (mRectBarB.width() / 2);
-            float textEnd = getHeight() - mRectBarB.height() - (widthBarRight / 2);
+            float textStart = startPoint + (mRectBarRight.width() / 2);
+            float textEnd = getHeight() - mRectBarRight.height() - (widthBarRight / 2);
 
             Paint percentText = new Paint();
             percentText.setTextSize((int) (17 * scale));
@@ -481,7 +495,7 @@ public class PercentBarView extends View {
         if (getParent() instanceof RelativeLayout) {
             //Logger.i("Parent is RelativeLayout");
         } else {
-            Log.i(PercentBarView.class.getSimpleName(), "Parent is not RelativeLayout !");
+            Log.i(TAG, "Parent is not RelativeLayout !");
             return;
         }
 

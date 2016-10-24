@@ -11,5 +11,6 @@
         <attr name="animBarDuration" format="float" />
         <attr name="animAlphaViewDuration" format="float" />
         <attr name="alphaViewValue" format="float" />
+        <attr name="autoShow" format="boolean" />
     </declare-styleable>
 </resources>
