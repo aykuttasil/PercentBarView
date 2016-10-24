@@ -14,13 +14,6 @@ Show result in Percent Bar with animation.
         mList.add(new BarImageModel("https://s-media-cache-ak0.pinimg.com/564x/9d/1c/86/9d1c861252a4d0067def3f567467b175.jpg", "Qwerty", PercentBarView.BarField.LEFT));
         mList.add(new BarImageModel("https://s-media-cache-ak0.pinimg.com/564x/5e/bd/17/5ebd1769bf115773ad83803b29ea4bac.jpg", "WWW", PercentBarView.BarField.LEFT));
         mList.add(new BarImageModel("https://s-media-cache-ak0.pinimg.com/564x/67/51/c3/6751c3d814fdda7db7e4844c3007db7c.jpg", "Aykut", PercentBarView.BarField.LEFT));
-        mList.add(new BarImageModel("https://pbs.twimg.com/profile_images/2658478840/b923df35a917b4acdce24d0e03c1a61a_400x400.png", "text 2", PercentBarView.BarField.RIGHT));
-        mList.add(new BarImageModel("https://yt3.ggpht.com/-wh6msZtAzCU/AAAAAAAAAAI/AAAAAAAAAAA/ERwt1WSIOUA/s900-c-k-no-rj-c0xffffff/photo.jpg", "text 3", PercentBarView.BarField.RIGHT));
-        mList.add(new BarImageModel("https://pbs.twimg.com/profile_images/2658478840/b923df35a917b4acdce24d0e03c1a61a_400x400.png", "text 4", PercentBarView.BarField.RIGHT));
-        mList.add(new BarImageModel("https://yt3.ggpht.com/-wh6msZtAzCU/AAAAAAAAAAI/AAAAAAAAAAA/ERwt1WSIOUA/s900-c-k-no-rj-c0xffffff/photo.jpg", "text 5", PercentBarView.BarField.LEFT));
-        mList.add(new BarImageModel("https://pbs.twimg.com/profile_images/2658478840/b923df35a917b4acdce24d0e03c1a61a_400x400.png", "text 6", PercentBarView.BarField.LEFT));
-        mList.add(new BarImageModel("https://yt3.ggpht.com/-wh6msZtAzCU/AAAAAAAAAAI/AAAAAAAAAAA/ERwt1WSIOUA/s900-c-k-no-rj-c0xffffff/photo.jpg", "text 7", PercentBarView.BarField.LEFT));
-        mList.add(new BarImageModel("https://pbs.twimg.com/profile_images/2658478840/b923df35a917b4acdce24d0e03c1a61a_400x400.png", "text 8", PercentBarView.BarField.LEFT));
 
         View alphaView = findViewById(R.id.ImageViewSoruImage);
         percentBarView = (PercentBarView) findViewById(R.id.PercentBarView);
@@ -31,7 +24,9 @@ Show result in Percent Bar with animation.
         percentBarView.setTitleList("X List");
         percentBarView.setRightBarColor(Color.MAGENTA);
 ```
-AND
+
+**and**
+
 ```
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -59,6 +54,31 @@ AND
                 </RelativeLayout>           
 ```
 
+**All Feature**
+
+```
+        View alphaView = findViewById(R.id.ImageViewSoruImage);
+        PercentBarView percentBarView = (PercentBarView) findViewById(R.id.PercentBarView);
+        
+        percentBarView.setRightValue(70);
+        percentBarView.setLeftValue(1);
+        
+        percentBarView.setImages(mList);
+        percentBarView.setTitleList("X List");
+        
+        percentBarView.setLeftBarColor(Color.GREEN);
+        percentBarView.setRightBarColor(Color.MAGENTA);
+
+        percentBarView.addAlphaView(alphaView);
+        percentBarView.setAlphaViewValue(0.5f); // alpha value
+        percentBarView.setAnimAlphaViewDuration(3000);
+        percentBarView.setAnimBarDuration(2000);
+        
+        percentBarView.setLeftWidthBar(60);
+        percentBarView.setRightWidthBar(40);
+        
+        percentBarView.setAutoShow(true); // show bar when start app
+```
 
 <p align="center">
   <img src="https://cloud.githubusercontent.com/assets/3179872/18619207/44e432da-7dff-11e6-8988-91d1faf4eed0.gif" width="350"/>
@@ -71,7 +91,7 @@ Gradle
 
 Add it as a dependency in your app's build.gradle file
 ```
-compile 'com.aykuttasil:percentbar:2.0.0'
+compile 'com.aykuttasil:percentbar:2.0.1'
 ```
 
 
