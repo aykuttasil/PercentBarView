@@ -80,9 +80,11 @@ Show result in Percent Bar with animation.
         percentBarView.setAutoShow(true); // show bar when start app
 ```
 
-<p align="center">
+![2016_10_24_13_53_14](https://cloud.githubusercontent.com/assets/3179872/19643347/7f6be100-99f2-11e6-984d-aa8a966b705a.gif)
+
+<!--<p align="center">
   <img src="https://cloud.githubusercontent.com/assets/3179872/18619207/44e432da-7dff-11e6-8988-91d1faf4eed0.gif" width="350"/>
-</p>
+</p>-->
 
 
 # Installation
