@@ -147,6 +147,10 @@ public class PercentBarView extends View {
         this.ListTitle = title;
     }
 
+    public void setImagesListItemSize(int size) {
+        this.IMAGES_SIZE = size;
+    }
+
     public void setRightBarColor(int color) {
         this.mColorBarRight = color;
     }
