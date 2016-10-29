@@ -70,9 +70,10 @@ public class PercentBarView extends View {
         RIGHT
     }
 
-    List<BarImageModel> mListImages;
-    private String TitleList = "My List";
+    private List<BarImageModel> mListImages;
+    private String ListTitle = "My List";
     private int IMAGES_COUNT = 3;
+    private int IMAGES_SIZE = 100;
 
     public PercentBarView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -88,7 +89,7 @@ public class PercentBarView extends View {
         this.widthBarRight = ta.getInt(R.styleable.CustomAnswerPercent_barRightWidth, 50);
         this.mValueBarLeft = ta.getInt(R.styleable.CustomAnswerPercent_barLeftValue, 0);
         this.mValueBarRight = ta.getInt(R.styleable.CustomAnswerPercent_barRightValue, 0);
-        this.mValueBarS = ta.getInt(R.styleable.CustomAnswerPercent_barSValue, 0);
+        //this.mValueBarS = ta.getInt(R.styleable.CustomAnswerPercent_barSValue, 0);
         this.mColorBarLeft = ta.getColor(R.styleable.CustomAnswerPercent_barLeftColor, Color.RED);
         this.mColorBarRight = ta.getColor(R.styleable.CustomAnswerPercent_barRightColor, Color.BLUE);
         this.animBarDuration = ta.getInt(R.styleable.CustomAnswerPercent_animBarDuration, 500);
@@ -102,19 +103,19 @@ public class PercentBarView extends View {
         this.mAlphaView = hostView;
     }
 
-    public void setRightValue(int val) {
+    public void setRightBarValue(int val) {
         this.mValueBarRight = val;
     }
 
-    public void setLeftWidthBar(int val) {
+    public void setLeftBarWidth(int val) {
         this.widthBarLeft = val;
     }
 
-    public void setRightWidthBar(int val) {
+    public void setRightBarWidth(int val) {
         this.widthBarRight = val;
     }
 
-    public void setLeftValue(int val) {
+    public void setLeftBarValue(int val) {
         this.mValueBarLeft = val;
     }
 
@@ -138,12 +139,12 @@ public class PercentBarView extends View {
         this.mListImages = list;
     }
 
-    public void setShowImagesCount(int count) {
+    public void setImagesCount(int count) {
         this.IMAGES_COUNT = count;
     }
 
-    public void setTitleList(String title) {
-        this.TitleList = title;
+    public void setImagesListTitle(String title) {
+        this.ListTitle = title;
     }
 
     public void setRightBarColor(int color) {
@@ -285,57 +286,6 @@ public class PercentBarView extends View {
         }
     }
 
-    private void drawImagesLeft() {
-
-        final RelativeLayout relativeLayout = (RelativeLayout) getParent();
-
-        Observable.from(mListImages)
-                .filter(new Func1<BarImageModel, Boolean>() {
-                    @Override
-                    public Boolean call(BarImageModel barImageModel) {
-                        return barImageModel.getValue() == BarField.LEFT;
-                    }
-                })
-                .take(IMAGES_COUNT)
-                .toList()
-                .filter(new Func1<List<BarImageModel>, Boolean>() {
-                    @Override
-                    public Boolean call(List<BarImageModel> barImageModels) {
-                        return barImageModels.size() > 0;
-                    }
-                })
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<BarImageModel>>() {
-                    @Override
-                    public void call(List<BarImageModel> barImageModels) {
-                        int index = 0;
-                        for (BarImageModel listItem : barImageModels) {
-
-                            ImageView imageView1 = new ImageView(mContext);
-
-                            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_START);
-                            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                            layoutParams.leftMargin = 30 - (index % 2 == 0 ? 10 : -10);
-                            layoutParams.bottomMargin = index * 50;
-                            imageView1.setLayoutParams(layoutParams);
-                            relativeLayout.addView(imageView1);
-
-                            Picasso.with(mContext)
-                                    .load(listItem.getImageUrl())
-                                    .transform(new PicassoCircleTransform())
-                                    .resize(100, 100)
-                                    .centerCrop()
-                                    .into(imageView1);
-
-                            index++;
-                        }
-                        drawAnotherIcon(index, BarField.LEFT);
-                    }
-                });
-    }
-
     private void drawBarRight(Canvas canvas) {
 
         if (!isAutoShow) return;
@@ -378,6 +328,57 @@ public class PercentBarView extends View {
         }
     }
 
+    private void drawImagesLeft() {
+
+        final RelativeLayout relativeLayout = (RelativeLayout) getParent();
+
+        Observable.from(mListImages)
+                .filter(new Func1<BarImageModel, Boolean>() {
+                    @Override
+                    public Boolean call(BarImageModel barImageModel) {
+                        return barImageModel.getValue() == BarField.LEFT;
+                    }
+                })
+                .take(IMAGES_COUNT)
+                .toList()
+                .filter(new Func1<List<BarImageModel>, Boolean>() {
+                    @Override
+                    public Boolean call(List<BarImageModel> barImageModels) {
+                        return barImageModels.size() > 0;
+                    }
+                })
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<List<BarImageModel>>() {
+                    @Override
+                    public void call(List<BarImageModel> barImageModels) {
+                        int index = 0;
+                        for (BarImageModel listItem : barImageModels) {
+
+                            ImageView imageView1 = new ImageView(mContext);
+
+                            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_START);
+                            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                            layoutParams.leftMargin = 30 - (index % 2 == 0 ? 10 : -10);
+                            layoutParams.bottomMargin = index * 50;
+                            imageView1.setLayoutParams(layoutParams);
+                            relativeLayout.addView(imageView1);
+
+                            Picasso.with(mContext)
+                                    .load(listItem.getImageUrl())
+                                    .transform(new PicassoCircleTransform())
+                                    .resize(IMAGES_SIZE, IMAGES_SIZE)
+                                    .centerCrop()
+                                    .into(imageView1);
+
+                            index++;
+                        }
+                        drawAnotherIcon(index, BarField.LEFT);
+                    }
+                });
+    }
+
     private void drawImagesRight() {
 
         final RelativeLayout relativeLayout = (RelativeLayout) getParent();
@@ -418,7 +419,7 @@ public class PercentBarView extends View {
                             Picasso.with(mContext)
                                     .load(listItem.getImageUrl())
                                     .transform(new PicassoCircleTransform())
-                                    .resize(100, 100)
+                                    .resize(IMAGES_SIZE, IMAGES_SIZE)
                                     .centerCrop()
                                     .into(imageView1);
 
@@ -458,7 +459,7 @@ public class PercentBarView extends View {
                 MaterialListAdapter adapter = new MaterialListAdapter(mContext, listItem);
 
                 MaterialDialog dialog = new MaterialDialog.Builder(mContext)
-                        .title(TitleList)
+                        .title(ListTitle)
                         .adapter(adapter, new MaterialDialog.ListCallback() {
                             @Override
                             public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
@@ -484,7 +485,7 @@ public class PercentBarView extends View {
         Picasso.with(mContext)
                 .load(R.drawable.ic_add_circle_indigo_300_48dp)
                 .placeholder(R.drawable.ic_add_circle_indigo_300_48dp)
-                .resize(100, 100)
+                .resize(IMAGES_SIZE, IMAGES_SIZE)
                 .into(imageView);
     }
 
@@ -511,7 +512,6 @@ public class PercentBarView extends View {
         //setMeasuredDimension(specWidth, specHeight);
         //setMeasuredDimension(measureWidth(widthMeasureSpec), measureHeight(heightMeasureSpec));
     }
-
 
     private void drawBar(Canvas canvas) {
         /*

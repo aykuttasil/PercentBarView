@@ -41,31 +41,31 @@ public class MainActivity extends AppCompatActivity {
         View alphaView = findViewById(R.id.ImageViewSoruImage);
         percentBarView = (PercentBarView) findViewById(R.id.PercentBarView);
         percentBarView.addAlphaView(alphaView);
-        percentBarView.setRightValue(70);
-        percentBarView.setLeftValue(1);
+        percentBarView.setRightBarValue(70);
+        percentBarView.setLeftBarValue(30);
         percentBarView.setImages(mList);
-        percentBarView.setTitleList("X List");
+        percentBarView.setImagesListTitle("X List");
         percentBarView.setRightBarColor(Color.MAGENTA);
 
 
         View alphaView1 = findViewById(R.id.ImageViewSoruImage1);
         percentBarView1 = (PercentBarView) findViewById(R.id.PercentBarView1);
         percentBarView1.addAlphaView(alphaView1);
-        percentBarView1.setRightValue(30);
-        percentBarView1.setLeftValue(80);
+        percentBarView1.setRightBarValue(30);
+        percentBarView1.setLeftBarValue(80);
         percentBarView1.setImages(mList);
-        percentBarView1.setTitleList("Y List");
-        percentBarView1.setRightWidthBar(70);
+        percentBarView1.setImagesListTitle("Y List");
+        percentBarView1.setRightBarWidth(70);
         percentBarView1.setRightBarColor(Color.BLACK);
 
 
         View alphaView2 = findViewById(R.id.ImageViewSoruImage2);
         percentBarView2 = (PercentBarView) findViewById(R.id.PercentBarView2);
         percentBarView2.addAlphaView(alphaView2);
-        percentBarView2.setRightValue(25);
-        percentBarView2.setLeftValue(42);
+        percentBarView2.setRightBarValue(25);
+        percentBarView2.setLeftBarValue(42);
         percentBarView2.setImages(mList);
-        percentBarView2.setTitleList("Z List");
+        percentBarView2.setImagesListTitle("Z List");
         percentBarView2.setLeftBarColor(Color.GRAY);
 
     }
