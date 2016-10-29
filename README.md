@@ -14,15 +14,15 @@ Show result in Percent Bar with animation.
         mList.add(new BarImageModel("https://s-media-cache-ak0.pinimg.com/564x/9d/1c/86/9d1c861252a4d0067def3f567467b175.jpg", "Qwerty", PercentBarView.BarField.LEFT));
         mList.add(new BarImageModel("https://s-media-cache-ak0.pinimg.com/564x/5e/bd/17/5ebd1769bf115773ad83803b29ea4bac.jpg", "WWW", PercentBarView.BarField.LEFT));
         mList.add(new BarImageModel("https://s-media-cache-ak0.pinimg.com/564x/67/51/c3/6751c3d814fdda7db7e4844c3007db7c.jpg", "Aykut", PercentBarView.BarField.LEFT));
-
+        
         View alphaView = findViewById(R.id.ImageViewSoruImage);
         percentBarView = (PercentBarView) findViewById(R.id.PercentBarView);
         percentBarView.addAlphaView(alphaView);
-        percentBarView.setRightValue(70);
-        percentBarView.setLeftValue(1);
+        percentBarView.setRightBarValue(70);
+        percentBarView.setLeftBarValue(30);
         percentBarView.setImages(mList);
-        percentBarView.setTitleList("X List");
-        percentBarView.setRightBarColor(Color.MAGENTA);
+        percentBarView.setImagesListTitle("X List");
+        percentBarView.setRightBarColor(Color.MAGENTA);        
 ```
 
 **and**
@@ -60,11 +60,11 @@ Show result in Percent Bar with animation.
         View alphaView = findViewById(R.id.ImageViewSoruImage);
         PercentBarView percentBarView = (PercentBarView) findViewById(R.id.PercentBarView);
         
-        percentBarView.setRightValue(70);
-        percentBarView.setLeftValue(1);
+        percentBarView.setRightBarValue(70);
+        percentBarView.setLeftBarValue(1);
         
         percentBarView.setImages(mList);
-        percentBarView.setTitleList("X List");
+        percentBarView.setImagesListTitle("X List");
         
         percentBarView.setLeftBarColor(Color.GREEN);
         percentBarView.setRightBarColor(Color.MAGENTA);
@@ -74,8 +74,8 @@ Show result in Percent Bar with animation.
         percentBarView.setAnimAlphaViewDuration(3000);
         percentBarView.setAnimBarDuration(2000);
         
-        percentBarView.setLeftWidthBar(60);
-        percentBarView.setRightWidthBar(40);
+        percentBarView.setLeftBarWidth(60);
+        percentBarView.setRightBarWidth(40);
         
         percentBarView.setAutoShow(true); // show bar when start app
 ```
@@ -97,7 +97,7 @@ Gradle
 
 Add it as a dependency in your app's build.gradle file
 ```
-compile 'com.aykuttasil:percentbar:2.0.1'
+compile 'com.aykuttasil:percentbar:3.0.0'
 ```
 
 
