@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         percentBarView1.setLeftBarValue(80);
         percentBarView1.setImages(mList);
         percentBarView1.setImagesListTitle("Y List");
+        percentBarView1.setImagesListItemSize(50);
         percentBarView1.setRightBarWidth(70);
         percentBarView1.setRightBarColor(Color.BLACK);
 

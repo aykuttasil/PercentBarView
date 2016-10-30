@@ -65,6 +65,7 @@ Show result in Percent Bar with animation.
         
         percentBarView.setImages(mList);
         percentBarView.setImagesListTitle("X List");
+        percentBarView.setImageListItemSize(50)
         
         percentBarView.setLeftBarColor(Color.GREEN);
         percentBarView.setRightBarColor(Color.MAGENTA);
@@ -97,7 +98,7 @@ Gradle
 
 Add it as a dependency in your app's build.gradle file
 ```
-compile 'com.aykuttasil:percentbar:3.0.0'
+compile 'com.aykuttasil:percentbar:3.0.3'
 ```
 
 

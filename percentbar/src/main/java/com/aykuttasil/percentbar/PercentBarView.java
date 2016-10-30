@@ -365,7 +365,7 @@ public class PercentBarView extends View {
                             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_START);
                             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
                             layoutParams.leftMargin = 30 - (index % 2 == 0 ? 10 : -10);
-                            layoutParams.bottomMargin = index * 50;
+                            layoutParams.bottomMargin = index * IMAGES_SIZE / 2;
                             imageView1.setLayoutParams(layoutParams);
                             relativeLayout.addView(imageView1);
 
@@ -416,7 +416,7 @@ public class PercentBarView extends View {
                             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_END);
                             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
                             layoutParams.rightMargin = 30 - (index % 2 == 0 ? 10 : -10);
-                            layoutParams.bottomMargin = index * 50;
+                            layoutParams.bottomMargin = index * IMAGES_SIZE / 2;
                             imageView1.setLayoutParams(layoutParams);
                             relativeLayout.addView(imageView1);
 
@@ -478,9 +478,9 @@ public class PercentBarView extends View {
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.addRule(barField == BarField.RIGHT ? RelativeLayout.ALIGN_PARENT_END : RelativeLayout.ALIGN_PARENT_START);
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        layoutParams.rightMargin = barField == BarField.LEFT ? 30 : 0;
-        layoutParams.leftMargin = barField == BarField.RIGHT ? 30 : 0;
-        layoutParams.bottomMargin = index * 50;
+        layoutParams.rightMargin = barField == BarField.RIGHT ? 30 : 0;
+        layoutParams.leftMargin = barField == BarField.LEFT ? 30 : 0;
+        layoutParams.bottomMargin = index * IMAGES_SIZE / 2;
 
         imageView.setLayoutParams(layoutParams);
 
